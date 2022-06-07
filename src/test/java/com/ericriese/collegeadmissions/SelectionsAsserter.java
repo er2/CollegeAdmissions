@@ -22,7 +22,7 @@ public class SelectionsAsserter {
     }
 
     void acceptIds(Set<Integer> expectedAcceptedIds) {
-        matchIds(assertee.accepted(), "accepted", expectedAcceptedIds);
+        matchIds(assertee.accepted(), "accepted ids", expectedAcceptedIds);
     }
 
     void matchIds(List<ApplicantEvaluation> applicants, String desc, Set<Integer> expectedIds) {
@@ -35,8 +35,12 @@ public class SelectionsAsserter {
         acceptIds(asserts.keySet());
         for (ApplicantEvaluation applicant : assertee.accepted()) {
             Consumer<ObjectAssert<ApplicantEvaluation>> assertConsumer = asserts.get(applicant.id());
-            ObjectAssert<ApplicantEvaluation> applicantObjectAssert = sa.assertThat(applicant);
-            assertConsumer.accept(applicantObjectAssert);
+            if (assertConsumer != null) {
+                ObjectAssert<ApplicantEvaluation> applicantObjectAssert = sa.assertThat(applicant).as("acceptee id:" + applicant.id());
+                assertConsumer.accept(applicantObjectAssert);
+            } else {
+                sa.fail("acceptee missing %s", applicant);
+            }
         }
         return this;
     }
@@ -49,8 +53,12 @@ public class SelectionsAsserter {
         rejectIds(asserts.keySet());
         for (ApplicantEvaluation applicant : assertee.rejected()) {
             Consumer<ObjectAssert<ApplicantEvaluation>> assertConsumer = asserts.get(applicant.id());
-            ObjectAssert<ApplicantEvaluation> applicantObjectAssert = sa.assertThat(applicant);
-            assertConsumer.accept(applicantObjectAssert);
+            if (assertConsumer != null) {
+                ObjectAssert<ApplicantEvaluation> applicantObjectAssert = sa.assertThat(applicant).as("rejectee id:" + applicant.id());
+                assertConsumer.accept(applicantObjectAssert);
+            } else {
+                sa.fail("rejectee missing %s", applicant);
+            }
         }
         return this;
     }

@@ -19,10 +19,6 @@ import java.util.Map;
 import static org.assertj.core.condition.AllOf.allOf;
 import static org.mockito.Mockito.mock;
 
-@SpringBootTest(classes = {
-        ObjectMapper.class, JacksonAutoConfiguration.class
-})
-@TestPropertySource("classpath:application.yaml")
 public class SelectionsTests {
 
     @Test
