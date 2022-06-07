@@ -14,9 +14,9 @@ class SelectionsAsserterTest {
     void acceptIdsCatchesDups() {
         Selections selections = Selections.builder()
                 .accepted(List.of(
-                        ApplicantEvaluation.builder().id(1).sat(5).essay(6).overall(7).build(),
-                        ApplicantEvaluation.builder().id(2).sat(1).essay(1).overall(1).build(),
-                        ApplicantEvaluation.builder().id(1).sat(9).essay(9).overall(9).build()))
+                        ApplicantEvaluation.builder().id(1).build(),
+                        ApplicantEvaluation.builder().id(2).build(),
+                        ApplicantEvaluation.builder().id(1).build()))
                 .build();
         SelectionsAsserter sa = new SelectionsAsserter(selections);
         sa.acceptIds(Set.of(1, 2));

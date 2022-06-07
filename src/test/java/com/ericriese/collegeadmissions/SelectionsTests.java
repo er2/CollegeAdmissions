@@ -25,9 +25,9 @@ public class SelectionsTests {
     public void minimumOverallScore() {
         // Given
         List<ApplicantEvaluation> applicants = List.of(
-                ApplicantEvaluation.builder().id(1).sat(5).essay(6).overall(7).build(),
-                ApplicantEvaluation.builder().id(2).sat(1).essay(1).overall(1).build(),
-                ApplicantEvaluation.builder().id(3).sat(9).essay(9).overall(9).build()
+                ApplicantEvaluation.builder().id(1).overall(5).build(),
+                ApplicantEvaluation.builder().id(2).overall(1).build(),
+                ApplicantEvaluation.builder().id(3).overall(9).build()
         );
         ClassStatistics stats = null;
         double minimumOverallScore = 5;
@@ -49,6 +49,6 @@ public class SelectionsTests {
     }
 
     Condition<ApplicantEvaluation> minimumOverallScore(double minOverallScore) {
-        return new Condition<>((eval -> eval.overall() > minOverallScore), "minimum overall score %f", minOverallScore);
+        return new Condition<>((eval -> eval.overall() >= minOverallScore), "minimum overall score %f", minOverallScore);
     }
 }
