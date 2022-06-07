@@ -3,7 +3,6 @@ package com.ericriese.collegeadmissions;
 import com.ericriese.collegeadmissions.selector.Selections;
 import com.ericriese.collegeadmissions.statistics.ApplicantEvaluation;
 import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multisets;
 import org.assertj.core.api.ObjectAssert;
 import org.assertj.core.api.SoftAssertions;
 
@@ -25,8 +24,8 @@ public class SelectionsAsserter {
         matchIds(assertee.accepted(), "accepted ids", expectedAcceptedIds);
     }
 
-    void matchIds(List<ApplicantEvaluation> applicants, String desc, Set<Integer> expectedIds) {
-        HashMultiset<Integer> actualIds = applicants.stream().collect(Multisets.toMultiset(ApplicantEvaluation::id, a -> 1, HashMultiset::create));
+    private void matchIds(List<ApplicantEvaluation> applicants, String desc, Set<Integer> expectedIds) {
+        HashMultiset<Integer> actualIds = HashMultiset.create(applicants.stream().map(ApplicantEvaluation::id)::iterator);
         sa.assertThat(actualIds.entrySet()).as(desc + " no duplicates").allMatch(entry -> entry.getCount() == 1, "no dups");
         sa.assertThat(new HashSet<>(actualIds)).as(desc).isEqualTo(expectedIds);
     }
