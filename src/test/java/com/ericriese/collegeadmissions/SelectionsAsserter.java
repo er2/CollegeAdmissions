@@ -41,6 +41,20 @@ public class SelectionsAsserter {
         return this;
     }
 
+    void rejectIds(Set<Integer> expectedRejectedIds) {
+        matchIds(assertee.rejected(), "rejected", expectedRejectedIds);
+    }
+
+    public SelectionsAsserter reject(Map<Integer, Consumer<ObjectAssert<ApplicantEvaluation>>> asserts) {
+        rejectIds(asserts.keySet());
+        for (ApplicantEvaluation applicant : assertee.rejected()) {
+            Consumer<ObjectAssert<ApplicantEvaluation>> assertConsumer = asserts.get(applicant.id());
+            ObjectAssert<ApplicantEvaluation> applicantObjectAssert = sa.assertThat(applicant);
+            assertConsumer.accept(applicantObjectAssert);
+        }
+        return this;
+    }
+
     public void assertAll() {
         sa.assertAll();
     }
